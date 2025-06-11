@@ -9,19 +9,17 @@ pipeline {
 
     stages {
 
-        stage(' Cloner le dépôt Git') {
+        stage('Cloner le dépôt Git') {
             steps {
                 git credentialsId: "${GIT_CREDENTIALS_ID}", url: 'https://github.com/Ghofrane1233/api_gateway.git', branch: 'main'
             }
         }
 
-        stage(' Installer les dépendances') {
+        stage('Installer les dépendances') {
             steps {
                 bat 'npm install'
             }
         }
-
-
 
         stage('Build de l\'image Docker') {
             steps {
@@ -31,7 +29,7 @@ pipeline {
             }
         }
 
-        stage(' Push vers Docker Hub') {
+        stage('Push vers Docker Hub') {
             steps {
                 script {
                     docker.withRegistry('https://index.docker.io/v1/', "${REGISTRY_CREDENTIALS_ID}") {
@@ -41,7 +39,7 @@ pipeline {
             }
         }
 
-        stage(' Déploiement sur Kubernetes') {
+        stage('Déploiement sur Kubernetes') {
             steps {
                 script {
                     withKubeConfig([credentialsId: 'kubeconfig', serverUrl: 'https://127.0.0.1:62537']) {
@@ -53,15 +51,21 @@ pipeline {
             }
         }
 
-   
+        stage('Monitoring avec Docker Compose') {
+            steps {
+                dir('monitoring') {
+                    bat 'docker-compose up -d'
+                }
+            }
+        }
     }
 
     post {
         success {
-            echo " Déploiement terminé avec succès sur Minikube."
+            echo "Déploiement terminé avec succès sur Minikube et monitoring démarré."
         }
         failure {
-            echo " La pipeline a échoué. Vérifiez les logs pour plus de détails."
+            echo "La pipeline a échoué. Vérifiez les logs pour plus de détails."
         }
     }
 }
