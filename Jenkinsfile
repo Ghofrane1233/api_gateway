@@ -2,7 +2,11 @@ pipeline {
     agent any
 
     environment {
+<<<<<<< HEAD
         DOCKER_IMAGE = "ghofrane694/apigateway:latest"
+=======
+        DOCKER_IMAGE = "ghofrane694/apigateway"
+>>>>>>> 53ca12f1aa04facb042af0e163267abb27f22a15
         REGISTRY_CREDENTIALS_ID = 'docker-hub-credentials-id'
         GIT_CREDENTIALS_ID = 'git-credentials-id'
     }
@@ -21,7 +25,11 @@ pipeline {
             }
         }
 
+<<<<<<< HEAD
     
+=======
+     
+>>>>>>> 53ca12f1aa04facb042af0e163267abb27f22a15
 
         stage('Build de l\'image Docker') {
             steps {
@@ -44,7 +52,7 @@ pipeline {
         stage(' Déploiement sur Kubernetes') {
             steps {
                 script {
-                    withKubeConfig([credentialsId: 'kubeconfig', serverUrl: 'https://127.0.0.1:52747']) {
+                    withKubeConfig([credentialsId: 'kubeconfig', serverUrl: 'https://127.0.0.1:62537']) {
                         bat 'kubectl apply -f db-secret.yaml --validate=false'
                         bat 'kubectl apply -f k8s/deployment.yaml --validate=false'
                         bat 'kubectl apply -f k8s/service.yaml --validate=false'
