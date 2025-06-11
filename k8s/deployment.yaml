@@ -15,6 +15,5 @@ spec:
       containers:
       - name: apigateway
         image: ghofrane694/apigateway:latest
-        imagePullPolicy: Never
         ports:
         - containerPort: 4000
