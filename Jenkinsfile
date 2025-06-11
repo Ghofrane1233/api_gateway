@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = "ghofrane694/msmodel"
+        DOCKER_IMAGE = "ghofrane694/apigateway"
         REGISTRY_CREDENTIALS_ID = 'docker-hub-credentials-id'
         GIT_CREDENTIALS_ID = 'git-credentials-id'
     }
