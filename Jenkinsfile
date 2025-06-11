@@ -2,11 +2,7 @@ pipeline {
     agent any
 
     environment {
-<<<<<<< HEAD
         DOCKER_IMAGE = "ghofrane694/apigateway:latest"
-=======
-        DOCKER_IMAGE = "ghofrane694/apigateway"
->>>>>>> 53ca12f1aa04facb042af0e163267abb27f22a15
         REGISTRY_CREDENTIALS_ID = 'docker-hub-credentials-id'
         GIT_CREDENTIALS_ID = 'git-credentials-id'
     }
@@ -25,11 +21,7 @@ pipeline {
             }
         }
 
-<<<<<<< HEAD
-    
-=======
-     
->>>>>>> 53ca12f1aa04facb042af0e163267abb27f22a15
+
 
         stage('Build de l\'image Docker') {
             steps {
