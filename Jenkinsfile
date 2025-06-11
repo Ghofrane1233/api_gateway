@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = "ghofrane694/msmodel"
+        DOCKER_IMAGE = "ghofrane694/apigateway:latest"
         REGISTRY_CREDENTIALS_ID = 'docker-hub-credentials-id'
         GIT_CREDENTIALS_ID = 'git-credentials-id'
     }
@@ -11,7 +11,7 @@ pipeline {
 
         stage(' Cloner le dépôt Git') {
             steps {
-                git credentialsId: "${GIT_CREDENTIALS_ID}", url: 'https://github.com/Ghofrane1233/msmodel.git', branch: 'main'
+                git credentialsId: "${GIT_CREDENTIALS_ID}", url: 'https://github.com/Ghofrane1233/api_gateway.git', branch: 'main'
             }
         }
 
@@ -21,11 +21,7 @@ pipeline {
             }
         }
 
-        stage('Exécuter les tests') {
-            steps {
-                bat 'npx jest --forceExit --detectOpenHandles'
-            }
-        }
+    
 
         stage('Build de l\'image Docker') {
             steps {
@@ -57,19 +53,7 @@ pipeline {
             }
         }
 
-        stage(' Déploiement de la stack de monitoring') {
-            steps {
-                script {
-                    withKubeConfig([credentialsId: 'kubeconfig', serverUrl: 'https://127.0.0.1:52747']) {
-                        bat 'kubectl apply -f monitoring/prometheus-config.yaml'
-                        bat 'kubectl apply -f monitoring/prometheus-deployment.yaml'
-                        bat 'kubectl apply -f monitoring/prometheus-service.yaml'
-                        bat 'kubectl apply -f monitoring/grafana-deployment.yaml'
-                        bat 'kubectl apply -f monitoring/grafana-service.yaml'
-                    }
-                }
-            }
-        }
+   
     }
 
     post {
